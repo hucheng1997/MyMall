@@ -1,6 +1,7 @@
 package com.hucheng.mall.product.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,15 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
+    /**
+     * 三级分类树形结构
+     */
+    @RequestMapping("/tree")
+    public R tree(){
+        List<CategoryEntity> list = categoryService.tree();
+
+        return R.ok().put("tree", list);
+    }
     /**
      * 列表
      */
