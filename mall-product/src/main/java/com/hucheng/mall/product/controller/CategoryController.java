@@ -38,7 +38,7 @@ public class CategoryController {
     public R tree(){
         List<CategoryEntity> list = categoryService.tree();
 
-        return R.ok().put("tree", list);
+        return R.ok().put("data", list);
     }
     /**
      * 列表
@@ -57,7 +57,6 @@ public class CategoryController {
     @RequestMapping("/info/{catId}")
     public R info(@PathVariable("catId") Long catId){
 		CategoryEntity category = categoryService.getById(catId);
-
         return R.ok().put("category", category);
     }
 
@@ -67,10 +66,18 @@ public class CategoryController {
     @RequestMapping("/save")
     public R save(@RequestBody CategoryEntity category){
 		categoryService.save(category);
-
         return R.ok();
     }
 
+    /**
+     * 批量修改
+     */
+    @RequestMapping("/batch/update")
+    public R update(@RequestBody List<CategoryEntity> categoryList){
+        categoryService.updateBatchById(categoryList);
+
+        return R.ok();
+    }
     /**
      * 修改
      */
@@ -86,8 +93,9 @@ public class CategoryController {
      */
     @RequestMapping("/delete")
     public R delete(@RequestBody Long[] catIds){
-		categoryService.removeByIds(Arrays.asList(catIds));
-
+        //这个API使用的是物理删除，我们需要使用逻辑删除
+//		categoryService.removeByIds(Arrays.asList(catIds));
+        categoryService.removeMenusByIds(Arrays.asList(catIds));
         return R.ok();
     }
 
