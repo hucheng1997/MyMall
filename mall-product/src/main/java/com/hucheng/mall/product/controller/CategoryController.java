@@ -34,7 +34,7 @@ public class CategoryController {
     /**
      * 三级分类树形结构
      */
-    @RequestMapping("/tree")
+    @RequestMapping("/list/tree")
     public R tree(){
         List<CategoryEntity> list = categoryService.tree();
 
@@ -83,7 +83,7 @@ public class CategoryController {
      */
     @RequestMapping("/update")
     public R update(@RequestBody CategoryEntity category){
-		categoryService.updateById(category);
+		categoryService.updateCascade(category);
 
         return R.ok();
     }
