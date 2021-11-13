@@ -12,5 +12,5 @@ spring:
         bucket: hucheng-mall
         endpoint: oss-cn-shenzhen.aliyuncs.com
 server:
-  port: 30000
+  port: 20000
 
