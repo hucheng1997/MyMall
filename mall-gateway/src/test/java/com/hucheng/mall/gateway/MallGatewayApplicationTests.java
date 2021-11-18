@@ -1,4 +1,4 @@
-package com.example.mall.gateway;
+package com.hucheng.mall.gateway;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

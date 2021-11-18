@@ -1,4 +1,4 @@
-package com.example.mall.gateway.config;
+package com.hucheng.mall.gateway.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

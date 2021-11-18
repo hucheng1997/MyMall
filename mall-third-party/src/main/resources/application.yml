@@ -6,10 +6,10 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     alicloud:
-      access-key: ***
-      secret-key: ***
+      access-key: LTAI5tHgiKL82NxTrmD7EbLq
+      secret-key: oN4MFWVlzO9qm5Vt0TIWG43w1ZFmbl
       oss:
-        bucket: **
+        bucket: hucheng-mall
         endpoint: oss-cn-shenzhen.aliyuncs.com
 server:
   port: 20000

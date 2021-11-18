@@ -21,17 +21,37 @@ spring:
             - Path=/api/product/**
           filters:
             - RewritePath=/api/?(?<segment>.*),/$\{segment}
+
         - id: third_party_route
           uri: lb://mall-third-party
           predicates:
             - Path=/api/thirdparty/**
           filters:
             - RewritePath=/api/thirdparty/?(?<segment>.*),/$\{segment}
-
+        - id: coupon_route
+          uri: lb://mall-coupon
+          predicates:
+            - Path=/api/coupon/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
+        - id: order_route
+          uri: lb://mall-order
+          predicates:
+            - Path=/api/order/**
+          filters:
+            - RewritePath=/api/(?<segment>.*),/$\{segment}
         - id: admin_route
           uri: lb://renren-fast
           predicates:
             - Path=/api/**
           filters:
             - RewritePath=/api/?(?<segment>.*), /renren-fast/$\{segment}
+        - id: mall_host_route
+          uri: lb://mall-product
+          predicates:
+            - Host=mall.com, item.mall.com
 
+        - id: mall_search_route
+          uri: lb://mall-search
+          predicates:
+            - Host=search.mall.com

@@ -5,10 +5,15 @@ import com.alibaba.fastjson.TypeReference;
 import com.hucheng.mall.product.service.CategoryBrandRelationService;
 import com.hucheng.mall.product.vo.Catalogs2Vo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -20,6 +25,7 @@ import com.hucheng.common.utils.Query;
 import com.hucheng.mall.product.dao.CategoryDao;
 import com.hucheng.mall.product.entity.CategoryEntity;
 import com.hucheng.mall.product.service.CategoryService;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 
@@ -64,6 +70,11 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
+    @Caching(evict = {
+            @CacheEvict(value = "category",key = "'getLevel1Categorys'"),
+            @CacheEvict(value = "category",key = "'getCatelogJson'")
+    })
+    @Transactional
     public void updateCascade(CategoryEntity category) {
         this.updateById(category);
         categoryBrandRelationService.updateCategory(category.getCatId(),category.getName());
@@ -80,6 +91,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
+    @Cacheable(value = {"category"},key = "#root.method.name")
     public List<CategoryEntity> getLevel1Categories() {
         System.out.println("get Level 1 Categories........");
         long l = System.currentTimeMillis();
@@ -89,6 +101,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return categoryEntities;
     }
 
+    @Cacheable(value = "category",key = "#root.methodName")
     @Override
     public Map<String, List<Catalogs2Vo>> getCatalogJson() {
         // 1.从缓存中读取分类信息
@@ -102,6 +115,42 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         }
         return JSON.parseObject(catalogJSON, new TypeReference<Map<String, List<Catalogs2Vo>>>() {
         });
+       
+    }
+
+    /**
+     * 从数据库查询并封装数据::分布式锁
+     *
+     * @return
+     */
+    public Map<String, List<Catalogs2Vo>> getCatalogJsonFromDbWithRedisLock() {
+        //1、占分布式锁。去redis占坑      设置过期时间必须和加锁是同步的，保证原子性（避免死锁）
+        String uuid = UUID.randomUUID().toString();
+        Boolean lock = redisTemplate.opsForValue().setIfAbsent("lock", uuid, 300, TimeUnit.SECONDS);
+        if (lock) {
+            System.out.println("获取分布式锁成功...");
+            Map<String, List<Catalogs2Vo>> dataFromDb;
+            try {
+                //加锁成功...执行业务
+                dataFromDb = getCatalogJsonFromDB();
+            } finally {
+                // lua 脚本解锁
+                String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+                // 删除锁
+                redisTemplate.execute(new DefaultRedisScript<>(script, Long.class), Collections.singletonList("lock"), uuid);
+            }
+            return dataFromDb;
+        } else {
+            System.out.println("获取分布式锁失败...等待重试...");
+            //加锁失败...重试机制
+            //休眠一百毫秒
+            try {
+                TimeUnit.MILLISECONDS.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return getCatalogJsonFromDbWithRedisLock();     //自旋的方式
+        }
     }
 
     /**

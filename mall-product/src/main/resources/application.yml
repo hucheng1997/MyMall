@@ -14,9 +14,18 @@ spring:
     cache: false
   redis:
     host: 192.168.182.150
-    port: 8080
+    port: 6379
+  cache:
+    type: redis
+    redis:
+      time-to-live: 3600000
+      # 缓存前缀,如果指定了前缀，就用指定的，如果没有，就使用缓存的名字作为前缀
+      key-prefix: CACHE_
+      use-key-prefix: true
+      # 是否缓存null值，防止缓存穿透
+      cache-null-values: true
 server:
-  port: 10000
+  port: 10001
 
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml

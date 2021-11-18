@@ -10,13 +10,16 @@ import org.elasticsearch.action.bulk.BulkItemResponse;
 import org.elasticsearch.action.bulk.BulkRequest;
 import org.elasticsearch.action.bulk.BulkResponse;
 import org.elasticsearch.action.index.IndexRequest;
+import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestHighLevelClient;
+import org.elasticsearch.client.indices.CreateIndexRequest;
 import org.elasticsearch.common.xcontent.XContentType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,6 +36,9 @@ public class ProductSaveServiceImpl implements ProductSaveService {
     @Override
     public boolean productStatusUp(List<SkuEsModel> skuEsModels) throws IOException {
         //1、在es中建立索引，建立号映射关系（doc/json/product-mapping.json）
+//        CreateIndexRequest createIndexRequest = new CreateIndexRequest("users2")
+//                .source(JSON.toJSONString(new HashMap<>()), XContentType.JSON);
+//        esRestClient.indices().create(createIndexRequest, RequestOptions.DEFAULT);
 
         //2、在ES中保存数据
         BulkRequest bulkRequest = new BulkRequest();
@@ -47,7 +53,7 @@ public class ProductSaveServiceImpl implements ProductSaveService {
         //如果存在错误
         boolean hasFailures = bulk.hasFailures();
         List<String> collect = Arrays.stream(bulk.getItems()).map(BulkItemResponse::getId).collect(Collectors.toList());
-        log.info("商品上架完成：{}", collect);
+//        log.info("商品上架完成：{}", collect);
         return hasFailures;
     }
 }
