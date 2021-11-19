@@ -18,10 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -253,10 +250,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         //2、查出当前sku的所有可以被用来检索的规格属性
         List<ProductAttrValueEntity> baseAttrs = productAttrValueService.baseAttrlistforspu(spuId);
 
-        List<Long> attrIds = baseAttrs.stream().map(ProductAttrValueEntity::getId).collect(Collectors.toList());
+        List<Long> attrIds = baseAttrs.stream().map(ProductAttrValueEntity::getAttrId).collect(Collectors.toList());
 
         List<Long> searchAttrIds = attrService.selectSearchAttrs(attrIds);
-        HashSet<Long> attrIdSet = new HashSet<>(searchAttrIds);
+        Set<Long> attrIdSet = new HashSet<>(searchAttrIds);
 
         List<SkuEsModel.Attrs> attrsList = baseAttrs.stream()
                 .filter(item -> attrIdSet.contains(item.getAttrId()))
