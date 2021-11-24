@@ -325,9 +325,9 @@ public class MallSearchServiceImpl implements MallSearchService {
         brand_agg.field("brandId").size(50);
 
         //1.1 品牌的子聚合-品牌名聚合
-        brand_agg.subAggregation(AggregationBuilders.terms("brand_name_agg").field("brandName.keyword").size(1));
+        brand_agg.subAggregation(AggregationBuilders.terms("brand_name_agg").field("brandName").size(1));
         //1.2 品牌的子聚合-品牌图片聚合
-        brand_agg.subAggregation(AggregationBuilders.terms("brand_img_agg").field("brandImg.keyword").size(1));
+        brand_agg.subAggregation(AggregationBuilders.terms("brand_img_agg").field("brandImg").size(1));
         searchSourceBuilder.aggregation(brand_agg);
 
         //2. 按照分类信息进行聚合
@@ -342,7 +342,7 @@ public class MallSearchServiceImpl implements MallSearchService {
         TermsAggregationBuilder attr_id_agg = AggregationBuilders.terms("attr_id_agg").field("attrs.attrId");
         attr_agg.subAggregation(attr_id_agg);
         //3.1.1 在每个属性ID下，按照属性名进行聚合
-        attr_id_agg.subAggregation(AggregationBuilders.terms("attr_name_agg").field("attrs.attrName.keyword").size(1));
+        attr_id_agg.subAggregation(AggregationBuilders.terms("attr_name_agg").field("attrs.attrName").size(1));
         //3.1.2 在每个属性ID下，按照属性值进行聚合
         attr_id_agg.subAggregation(AggregationBuilders.terms("attr_value_agg").field("attrs.attrValue").size(50));
         searchSourceBuilder.aggregation(attr_agg);
