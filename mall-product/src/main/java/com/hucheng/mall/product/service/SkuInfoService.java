@@ -6,6 +6,7 @@ import com.hucheng.mall.product.entity.SkuInfoEntity;
 import com.hucheng.mall.product.entity.SpuInfoEntity;
 import com.hucheng.mall.product.vo.SkuItemVo;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
@@ -28,5 +29,7 @@ public interface SkuInfoService extends IService<SkuInfoEntity> {
     List<SkuInfoEntity> getSkuBySpuId(Long spuId);
 
     SkuItemVo item(Long skuId) throws ExecutionException, InterruptedException;
+
+    BigDecimal getPrice(Long skuId);
 }
 

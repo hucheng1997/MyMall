@@ -8,6 +8,66 @@
   <link rel="stylesheet" type="text/css" href="/static/item/scss/jd.css"/>
   <link rel="stylesheet" href="/static/item/scss/header.css"/>
   <link rel="stylesheet" type="text/css" href="/static/item/bootstrap/css/bootstrap.css"/>
+  <script src="/static/item/js/jquery1.9.js" type="text/javascript" charset="utf-8"></script>
+  <script src="/static/item/js/js.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript">
+    $(".sku_attr_value").click(function () {
+      // 1、点击的元素添加上自定义的属性
+      let skus = new Array();
+      let curr = $(this).attr("skus").split(",");
+
+      $(this).parent().parent().find(".sku_attr_value").removeClass("checked");
+      $(this).addClass("checked");
+      changeCheckedStyle();
+
+      $("a[class='sku_attr_value checked']").each(function () {
+        skus.push($(this).attr("skus").split(","));
+      });
+
+      let filterEle = skus[0];
+      for (let i = 1; i < skus.length; i++) {
+        filterEle = $(filterEle).filter(skus[i])[0];
+      }
+
+      location.href = "http://item.mall.com/" + filterEle + ".html";
+
+      return false;
+    });
+    $(function () {
+      changeCheckedStyle();
+    });
+
+    function changeCheckedStyle() {
+      $(".sku_attr_value").parent().css({"border": "solid 1px #ccc"});
+      $("a[class='sku_attr_value checked']").parent().css({"border": "solid 1px red"});
+    };
+
+
+    // $(".addToCart").off().click(function () {
+    //   let skuId = $(this).attr("skuId");
+    //   let num = $("#productNum").val();
+    //   location.href = "http://cart.mall.com/addCartItem?skuId=" + skuId + "&num=" + num;
+    //   return false;
+    // });
+    function addToCart(){
+      let skuId = $("#productSkuId").attr("skuId");
+      let num = $("#productNum").val();
+      location.href = "http://cart.mall.com/addCartItem?skuId=" + skuId + "&num=" + num;
+    };
+    $(".seckill").click(function () {
+      var isLogin = [[${session.loginUser != null}]];     //true
+      if (isLogin) {
+        var killId = $(this).attr("sessionid") + "-" + $(this).attr("skuid");
+        var code = $(this).attr("code");
+        var num = $("#productNum").val();
+        location.href = "http://seckill.mall.com/kill?killId=" + killId + "&key=" + code + "&num=" + num;
+      } else {
+        alert("秒杀请先登录");
+      }
+      return false;
+    });
+
+  </script>
 </head>
 <body>
 <div id="max">
@@ -70,7 +130,7 @@
         </li>
         <li><a href="http://member.mall.com/memberOrder.html" class="aa">我的订单</a> |</li>
         <li class="jingdong"><a href="/static/item/javascript:;">我的京东</a><span
-            class="glyphicon glyphicon-menu-down">|</span>
+                class="glyphicon glyphicon-menu-down">|</span>
           <ol class="jingdong_ol">
             <li><a href="/static/item/javascript:;">待处理订单</a></li>
             <li><a href="/static/item/javascript:;">消息</a></li>
@@ -89,7 +149,7 @@
         <li><a href="/static/item/javascript:;" class="aa">京东会员</a> |</li>
         <li><a href="/static/item/javascript:;" class="aa">企业采购</a> |</li>
         <li class="fuwu"><a href="/static/item/javascript:;">客户服务</a><span
-            class="glyphicon glyphicon-menu-down"></span> |
+                class="glyphicon glyphicon-menu-down"></span> |
           <ol class="fuwu_ol">
             <h6>客户</h6>
             <li><a href="/static/item/javascript:;">帮助中心</a></li>
@@ -110,7 +170,7 @@
           </ol>
         </li>
         <li class="daohang"><a href="/static/item/javascript:;">网站导航</a><span
-            class="glyphicon glyphicon-menu-down"></span> |
+                class="glyphicon glyphicon-menu-down"></span> |
           <ol class="daohang_ol">
             <li style="width: 34%;">
               <h5>特色主题</h5>
@@ -253,7 +313,7 @@
                 <h6><a href="/static/item/#">京东金融客户端</a></h6>
                 <p>新人专享大礼包</p>
                 <div><a href="/static/item/#"><img src="/static/item/img/11.png"/></a><a
-                    href="/static/item/#"><img src="/static/item/img/22.png"/></a></div>
+                        href="/static/item/#"><img src="/static/item/img/22.png"/></a></div>
               </div>
             </div>
           </div>
@@ -269,7 +329,7 @@
           <button>搜索</button>
         </div>
         <div class="nav_top_three"><a href="http://cart.mall.com/cart.html">我的购物车</a><span
-            class="glyphicon glyphicon-shopping-cart"></span>
+                class="glyphicon glyphicon-shopping-cart"></span>
           <div class="nav_top_three_1">
             <img src="/static/item/img/44.png"/>购物车还没有商品，赶紧选购吧！
           </div>
@@ -278,18 +338,18 @@
       <div class="nav_down">
         <ul class="nav_down_ul">
           <li class="nav_down_ul_1" style="width: 24%;float: left;"><a
-              href="/static/item/javascript:;">全部商品分类</a>
+                  href="/static/item/javascript:;">全部商品分类</a>
 
           </li>
           <li class="ul_li"><a href="/static/item/javascript:;">服装城</a></li>
           <li class="ul_li"><a href="/static/item/javascript:;">美妆馆</a></li>
           <li class="ul_li"><a href="/static/item/javascript:;">超市</a></li>
           <li class="ul_li" style="border-right: 1px solid lavender;"><a
-              href="/static/item/javascript:;">生鲜</a></li>
+                  href="/static/item/javascript:;">生鲜</a></li>
           <li class="ul_li"><a href="/static/item/javascript:;">全球购</a></li>
           <li class="ul_li"><a href="/static/item/javascript:;">闪购</a></li>
           <li class="ul_li" style="border-right: 1px solid lavender;"><a
-              href="/static/item/javascript:;">拍卖</a></li>
+                  href="/static/item/javascript:;">拍卖</a></li>
           <li class="ul_li"><a href="/static/item/javascript:;">金融</a></li>
         </ul>
       </div>
@@ -529,8 +589,7 @@
                                 商品将会在[[${#dates.format(new java.util.Date(item.seckillSkuVo.startTime),"yyyy-MM-dd HH:mm:ss")}]]进行秒杀
                             </span>
 
-              <span
-                  th:if="${#dates.createNow().getTime() >= item.seckillSkuVo.startTime && #dates.createNow().getTime() <= item.seckillSkuVo.endTime}">
+              <span th:if="${#dates.createNow().getTime() >= item.seckillSkuVo.startTime && #dates.createNow().getTime() <= item.seckillSkuVo.endTime}">
                                 秒杀价  [[${#numbers.formatDecimal(item.seckillSkuVo.seckillPrice,1,2)}]]
                             </span>
 
@@ -681,7 +740,7 @@
 
           <div class="box-btns-two"
                th:if="${item.seckillSkuVo == null }">
-            <a class="addToCart" href="#" th:attr="skuId=${item.info.skuId}">
+            <a id="productSkuId" href="javascript:void(0)" onclick="addToCart()" th:attr="skuId=${item.info.skuId}">
               加入购物车
             </a>
           </div>
@@ -1005,7 +1064,7 @@
                     本产品全国联保，享受三包服务，质保期为：一年保<br/>
                     如因质量问题或故障，凭厂商维修中心或特约维修点的质量检测证明，享受7日内退货，15日内换货，15日以上在保质期内享受免费保修等安保服务！<br/>
                     (注：如厂家在商品介绍中有售后保障的说明，则此商品按照厂家说明执行售后保障服务。)您可以查询本品牌在各地售后服务中心的练习方式<a
-                      href="/static/item/#">请点击这儿查询...</a><br/><br/>
+                          href="/static/item/#">请点击这儿查询...</a><br/><br/>
                   </div>
                 </div>
                 <div class="lianBao oCn">
@@ -1017,7 +1076,7 @@
                     本产品全国联保，享受三包服务，质保期为：一年保<br/>
                     如因质量问题或故障，凭厂商维修中心或特约维修点的质量检测证明，享受7日内退货，15日内换货，15日以上在保质期内享受免费保修等安保服务！<br/>
                     (注：如厂家在商品介绍中有售后保障的说明，则此商品按照厂家说明执行售后保障服务。)您可以查询本品牌在各地售后服务中心的练习方式<a
-                      href="/static/item/#">请点击这儿查询...</a><br/><br/><br/>
+                          href="/static/item/#">请点击这儿查询...</a><br/><br/><br/>
                   </div>
                 </div>
 
@@ -1125,7 +1184,7 @@
                 <li><a href="/static/item/##">差评（100+）</a></li>
                 <li><a href="/static/item/##"><input type="checkbox"/>只看当前商品价格</a></li>
                 <li class="imga" style="float: right;"><a href="/static/item/##">推荐排序 <img
-                    src="/static/item/img/animaite.png"/> </a>
+                        src="/static/item/img/animaite.png"/> </a>
                 </li>
               </ul>
             </div>
@@ -1349,66 +1408,9 @@
   <img src="/static/item/img/44.png"/>
   <span>购物车还没有商品，赶紧选购吧！</span>
 </div>
+
 </body>
 
-<script src="/static/item/js/jquery1.9.js" type="text/javascript" charset="utf-8"></script>
-<script src="/static/item/js/js.js" type="text/javascript" charset="utf-8"></script>
-<script type="text/javascript">
-</script>
 
-<script>
-  $(".sku_attr_value").click(function () {
-    // 1、点击的元素添加上自定义的属性
-    let skus = new Array();
-    let curr = $(this).attr("skus").split(",");
-
-    $(this).parent().parent().find(".sku_attr_value").removeClass("checked");
-    $(this).addClass("checked");
-    changeCheckedStyle();
-
-    $("a[class='sku_attr_value checked']").each(function () {
-      skus.push($(this).attr("skus").split(","));
-    });
-
-    let filterEle = skus[0];
-    for (let i = 1; i < skus.length; i++) {
-      filterEle = $(filterEle).filter(skus[i])[0];
-    }
-
-    location.href = "http://item.mall.com/" + filterEle + ".html";
-
-    return false;
-  });
-  $(function () {
-    changeCheckedStyle();
-  });
-
-  function changeCheckedStyle() {
-    $(".sku_attr_value").parent().css({"border": "solid 1px #ccc"});
-    $("a[class='sku_attr_value checked']").parent().css({"border": "solid 1px red"});
-  };
-
-
-  $(".addToCart").click(function () {
-    let skuId = $(this).attr("skuId");
-    let num = $("#productNum").val();
-    location.href = "http://cart.mall.com/addCartItem?skuId=" + skuId + "&num=" + num;
-    return false;
-  });
-
-  $(".seckill").click(function () {
-    var isLogin = [[${session.loginUser != null}]];     //true
-    if (isLogin) {
-      var killId = $(this).attr("sessionid") + "-" + $(this).attr("skuid");
-      var code = $(this).attr("code");
-      var num = $("#productNum").val();
-      location.href = "http://seckill.mall.com/kill?killId=" + killId + "&key=" + code + "&num=" + num;
-    } else {
-      alert("秒杀请先登录");
-    }
-    return false;
-  });
-
-</script>
 
 </html>
