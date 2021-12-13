@@ -142,6 +142,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
     @Override
+    // @GlobalTransactional(rollbackFor = Exception.class)
     @Transactional(rollbackFor = Exception.class)
     public SubmitOrderResponseVo submitOrder(OrderSubmitVo vo) {
         confirmVoThreadLocal.set(vo);

@@ -12,7 +12,7 @@ spring:
         server-addr: 127.0.0.1:8848
   rabbitmq:
     host: 192.168.182.150
-    addresses: 5672
+    port: 5672
     virtual-host: /
     # 开启发送端消息抵达Broker确认
     publisher-confirms: true
