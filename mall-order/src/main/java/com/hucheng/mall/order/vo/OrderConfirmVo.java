@@ -1,7 +1,5 @@
 package com.hucheng.mall.order.vo;
 
-import com.hucheng.mall.order.web.OrderItemVo;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 

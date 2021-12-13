@@ -1,4 +1,4 @@
-package com.hucheng.mall.order.web;
+package com.hucheng.mall.order.vo;
 
 import lombok.Data;
 

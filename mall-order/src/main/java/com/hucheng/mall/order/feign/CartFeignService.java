@@ -1,6 +1,6 @@
 package com.hucheng.mall.order.feign;
 
-import com.hucheng.mall.order.web.OrderItemVo;
+import com.hucheng.mall.order.vo.OrderItemVo;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 
