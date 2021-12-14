@@ -73,7 +73,7 @@ public class OrderWebController {
                 String message = ((NoStockException) e).getMessage();
                 attributes.addFlashAttribute("msg", message);
             }
-            return "redirect:http://order.gulimall.com/toTrade";
+            return "redirect:http://order.mall.com/toTrade";
         }
     }
 }
