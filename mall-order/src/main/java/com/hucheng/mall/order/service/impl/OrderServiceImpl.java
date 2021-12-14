@@ -241,7 +241,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     public OrderEntity getOrderByOrderSn(String orderSn) {
-        returnthis.baseMapper.selectOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderSn));
+        return this.baseMapper.selectOne(new QueryWrapper<OrderEntity>().eq("order_sn", orderSn));
     }
 
     private void saveOrder(OrderCreateTo orderCreateTo) {

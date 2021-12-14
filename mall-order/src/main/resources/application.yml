@@ -55,3 +55,6 @@ mall:
     max-size: 200
     keep-alive-time: 10
 
+logging:
+  level:
+    com.hucheng.mall: debug
