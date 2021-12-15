@@ -1,0 +1,55 @@
+spring:
+  application:
+    name: mall-seckill
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 127.0.0.1:8848
+  rabbitmq:
+    host: 192.168.182.150
+    port: 5672
+    virtual-host: /
+  thymeleaf:
+    cache: false
+  session:
+    store-type: redis
+  redis:
+    host: 192.168.182.150
+    port: 6379
+server:
+  port: 25000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
+
+#线程池配置
+mall:
+  thread:
+    core-size: 20
+    max-size: 200
+    keep-alive-time: 10
+
+#开启feign对sentinel的支持
+logging:
+  level:
+    org:
+      springframework:
+        cloud:
+          openfeign: debug
+          sleuth: debug
+    com:
+      hucheng:
+        mall: debug
+feign:
+  sentinel:
+    enabled: true
+  #配置异步任务线程池
+  task:
+    execution:
+      pool:
+        core-size: 5
+        max-size: 50
+

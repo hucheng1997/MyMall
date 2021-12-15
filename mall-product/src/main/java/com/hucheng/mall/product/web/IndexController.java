@@ -26,7 +26,7 @@ public class IndexController {
         //1、查出所有的一级分类
         List<CategoryEntity> categoryEntities = categoryService.getLevel1Categories();
         model.addAttribute("categories", categoryEntities);
-        return "index";
+        return "index.html.bak";
     }
 
 
