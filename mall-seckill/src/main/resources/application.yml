@@ -5,6 +5,12 @@ spring:
     nacos:
       discovery:
         server-addr: 127.0.0.1:8848
+    sentinel:
+      transport:
+        #默认8719端口，假如被占用会自动从8719开始依次+1扫描，直至找到未被占用的端口
+        port: 8719
+        #配置sentinel dashboard地址
+        dashboard: localhost:8080
   rabbitmq:
     host: 192.168.182.150
     port: 5672
@@ -43,6 +49,8 @@ logging:
     com:
       hucheng:
         mall: debug
+
+#开启feign对sentinel的支持
 feign:
   sentinel:
     enabled: true

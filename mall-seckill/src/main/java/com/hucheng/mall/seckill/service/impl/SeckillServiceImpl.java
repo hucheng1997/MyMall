@@ -1,5 +1,7 @@
 package com.hucheng.mall.seckill.service.impl;
 
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
+import com.alibaba.csp.sentinel.slots.block.BlockException;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
@@ -76,6 +78,7 @@ public class SeckillServiceImpl implements SeckillService {
     }
 
     @Override
+    @SentinelResource(value = "getCurrentSeckillSkusResource",blockHandler = "blockHandler")
     public List<SeckillSkuRedisTo> getCurrentSeckillSkus() {
         //1、确定当前属于哪个秒杀场次
         long currentTime = System.currentTimeMillis();
@@ -111,6 +114,10 @@ public class SeckillServiceImpl implements SeckillService {
         return null;
     }
 
+    public List<SeckillSkuRedisTo> blockHandler(BlockException e) {
+        log.error("getCurrentSeckillSkusResource被限流了,{}",e.getMessage());
+        return null;
+    }
     @Override
     public SeckillSkuRedisTo getSkuSeckilInfo(Long skuId) {
         //1、找到所有需要秒杀的商品的key信息---seckill:skus

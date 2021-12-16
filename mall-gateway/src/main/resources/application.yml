@@ -1,5 +1,9 @@
 spring:
   cloud:
+    sentinel:
+      transport:
+        #配置sentinel dashboard地址
+        dashboard: localhost:8080
     gateway:
       routes:
         - id: member_route
@@ -70,3 +74,10 @@ spring:
           uri: lb://mall-order
           predicates:
             - Host=order.mall.com
+
+#暴露所有端点
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'
